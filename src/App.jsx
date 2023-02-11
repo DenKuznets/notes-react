@@ -1,4 +1,4 @@
-import React from "react";
+import {useState, useEffect} from "react";
 import Sidebar from "./components/Sidebar";
 import Editor from "./components/Editor";
 import { data } from "./data";
@@ -8,13 +8,29 @@ import { nanoid } from "nanoid";
 
 
 export default function App() {
-  // localStorage.setItem('myName', 'Den');
-  localStorage.removeItem('myName')
-  console.log(localStorage.getItem('myName'));
-  const [notes, setNotes] = React.useState([]);
-  const [currentNoteId, setCurrentNoteId] = React.useState(
+  const localStorageKey = 'notes';
+  // localStorage.setItem('myCat', 'Tom');
+  // const cat = localStorage.getItem("myCat");
+  // localStorage.removeItem('myCat');
+  // localStorage.clear();
+  // JSON.stringify() - превратить данные в строку
+  // JSON.parse() - вытащить данные из строки
+
+  const [notes, setNotes] = useState(
+    JSON.parse(localStorage.getItem(localStorageKey)) || []
+  );
+  const [currentNoteId, setCurrentNoteId] = useState(
     (notes[0] && notes[0].id) || ""
   );
+
+  useEffect(() => {
+    if (notes.length > 0) {
+      const myJSON = JSON.stringify(notes);
+      localStorage.setItem(localStorageKey, myJSON);
+    } else {
+      console.log('no notes');
+    }
+  }, [notes]);
 
   function createNewNote() {
     const newNote = {
