@@ -1,14 +1,12 @@
-import {useState, useEffect} from "react";
+import { useState, useEffect } from "react";
 import Sidebar from "./components/Sidebar";
 import Editor from "./components/Editor";
 import { data } from "./data";
 import Split from "react-split";
 import { nanoid } from "nanoid";
 
-
-
 export default function App() {
-  const localStorageKey = 'notes';
+  const localStorageKey = "notes";
   // localStorage.setItem('myCat', 'Tom');
   // const cat = localStorage.getItem("myCat");
   // localStorage.removeItem('myCat');
@@ -16,9 +14,9 @@ export default function App() {
   // JSON.stringify() - превратить данные в строку
   // JSON.parse() - вытащить данные из строки
 
-  const [notes, setNotes] = useState(
-    JSON.parse(localStorage.getItem(localStorageKey)) || []
-  );
+  const [notes, setNotes] = useState(() => {
+    return JSON.parse(localStorage.getItem(localStorageKey)) || [];
+  });
   const [currentNoteId, setCurrentNoteId] = useState(
     (notes[0] && notes[0].id) || ""
   );
@@ -28,7 +26,7 @@ export default function App() {
       const myJSON = JSON.stringify(notes);
       localStorage.setItem(localStorageKey, myJSON);
     } else {
-      console.log('no notes');
+      console.log("no notes");
     }
   }, [notes]);
 
