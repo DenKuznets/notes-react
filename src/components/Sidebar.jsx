@@ -1,18 +1,25 @@
 import React from "react";
 
 export default function Sidebar(props) {
-  const noteElements = props.notes.map((note, index) => (
-    <div key={note.id}>
-      <div
-        className={`title ${
-          note.id === props.currentNote.id ? "selected-note" : ""
-        }`}
-        onClick={() => props.setCurrentNoteId(note.id)}
-      >
-        <h4 className="text-snippet">Note {index + 1}</h4>
+  const noteElements = props.notes.map((note, index) => {
+    let myString = note.body;
+    let separateLines = myString.split(/\r?\n|\r|\n/g);
+    // если тело записки пустое, separateLines будет содержать только одну пустую строку. 
+    let title =
+      separateLines[0] === "" ? `Note ${index + 1}` : separateLines[0];
+    return (
+      <div key={note.id}>
+        <div
+          className={`title ${
+            note.id === props.currentNote.id ? "selected-note" : ""
+          }`}
+          onClick={() => props.setCurrentNoteId(note.id)}
+        >
+          <h4 className="text-snippet">{title}</h4>
+        </div>
       </div>
-    </div>
-  ));
+    );
+  });
 
   return (
     <section className="pane sidebar">
