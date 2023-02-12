@@ -35,8 +35,20 @@ export default function App() {
       id: nanoid(),
       body: "# Type your markdown note's title here",
     };
-    setNotes((prevNotes) => [newNote, ...prevNotes]);
+    updateNotesList(newNote, true);
     setCurrentNoteId(newNote.id);
+  }
+  
+  // у нас есть список заметок
+  // мы ищем в нем записку с нужным id
+  // эту записку мы обновляем (текст) и сохраняем отдельно
+  // создаем новый массив записок в котором нет только что измененной записки
+  // добавляем в начало нового массива измененную записку
+  // возвращаем этот новый массив
+  
+  function updateNotesList(note, isNew) {
+    if(isNew) setNotes((prevNotes) => [note, ...prevNotes]);
+
   }
 
   function updateNote(text) {
