@@ -35,33 +35,42 @@ export default function App() {
       id: nanoid(),
       body: "# Type your markdown note's title here",
     };
-    updateNotesList(newNote, true);
+    setNotes((prevNotes) => [newNote, ...prevNotes]);
     setCurrentNoteId(newNote.id);
-  }
-  
-  function updateNotesList(note, isNew) {
-    if(isNew) setNotes((prevNotes) => [note, ...prevNotes]);
-    else {
-      setNotes((prevNotes => {
-        // нужно удалить обновленную заметку из старого списка
-        let newArr = prevNotes.filter((item) => !(item.id === note.id));
-        // и поместить ее в начале массива
-        return [note, ...newArr];
-      }))
-    }
   }
 
   function updateNote(text) {
-    setNotes((oldNotes) =>
-      oldNotes.map((oldNote) => {
-        let currentNote = oldNote;
+    // Put the most recently-modified note at the top
+    setNotes((oldNotes) => {
+      const newArray = [];
+      for (let i = 0; i < oldNotes.length; i++) {
+        const oldNote = oldNotes[i];
         if (oldNote.id === currentNoteId) {
-          currentNote = { ...oldNote, body: text };
-          updateNotesList(currentNote, false);
+          newArray.unshift({ ...oldNote, body: text });
+        } else {
+          newArray.push(oldNote);
         }
-        return currentNote;
-      })
-    );
+      }
+      return newArray;
+    });
+  }
+
+  /**
+   * Challenge: complete and implement the deleteNote function
+   *
+   * Hints:
+   * 1. What array method can be used to return a new
+   *    array that has filtered out an item based
+   *    on a condition?
+   * 2. Notice the parameters being based to the function
+   *    and think about how both of those parameters
+   *    can be passed in during the onClick event handler
+   */
+
+  function deleteNote(event, noteId) {
+    event.stopPropagation();
+    // Your code here
+    
   }
 
   function findCurrentNote() {
