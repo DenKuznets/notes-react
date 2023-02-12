@@ -1,24 +1,25 @@
 import React from "react";
 
 export default function Sidebar(props) {
-  const noteElements = props.notes.map((note, index) => {
-    let separateLines = note.body.split(/\r?\n|\r|\n/g);
-    // если тело записки пустое, separateLines будет содержать только одну пустую строку. 
-    let title =
-      separateLines[0] === "" ? `Note ${index + 1}` : separateLines[0];
-    return (
-      <div key={note.id}>
-        <div
-          className={`title ${
-            note.id === props.currentNote.id ? "selected-note" : ""
-          }`}
-          onClick={() => props.setCurrentNoteId(note.id)}
+  const noteElements = props.notes.map((note, index) => (
+    <div key={note.id}>
+      <div
+        className={`title ${
+          note.id === props.currentNote.id ? "selected-note" : ""
+        }`}
+        onClick={() => props.setCurrentNoteId(note.id)}
+      >
+        <h4 className="text-snippet">{note.body.split("\n")[0]}</h4>
+        <button
+          className="delete-btn"
+          // Your onClick event handler here
+          onClick={(e) => props.deleteNote(e, note.id)}
         >
-          <h4 className="text-snippet">{title}</h4>
-        </div>
+          <i className="gg-trash trash-icon"></i>
+        </button>
       </div>
-    );
-  });
+    </div>
+  ));
 
   return (
     <section className="pane sidebar">
