@@ -48,15 +48,25 @@ export default function App() {
   
   function updateNotesList(note, isNew) {
     if(isNew) setNotes((prevNotes) => [note, ...prevNotes]);
-
+    else {
+      setNotes((prevNotes => {
+        // нужно удалить обновленную заметку из старого списка
+        let newArr = prevNotes.filter((item) => !(item.id === note.id));
+        // и поместить ее в начале массива
+        return [note, ...newArr];
+      }))
+    }
   }
 
   function updateNote(text) {
     setNotes((oldNotes) =>
       oldNotes.map((oldNote) => {
-        return oldNote.id === currentNoteId
-          ? { ...oldNote, body: text }
-          : oldNote;
+        let currentNote = oldNote;
+        if (oldNote.id === currentNoteId) {
+          currentNote = { ...oldNote, body: text };
+          updateNotesList(currentNote, false);
+        }
+        return currentNote;
       })
     );
   }
